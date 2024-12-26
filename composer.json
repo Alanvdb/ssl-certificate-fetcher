@@ -1,0 +1,18 @@
+{
+    "name": "alanvdb/ssl-certificate-fetcher",
+    "description": "Provide SSL certificate for a given domain.",
+    "type": "library",
+    "license": "mit",
+    "autoload": {
+        "psr-4": {
+            "AlanVdb\\SslCertificateFetcher\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "alanvdb",
+            "email": "alanvdb.coder@gmail.com"
+        }
+    ],
+    "require": {}
+}
