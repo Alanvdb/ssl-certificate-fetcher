@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\SslCertificateFetcher;
+namespace AlanVdb\Http;
 
-use AlanVdb\SslCertificateFetcher\Definition\SslCertificateFetcherInterface;
-use AlanVdb\SslCertificateFetcher\Exception\SslCertificateFetchException;
+use AlanVdb\Http\Definition\SslCertificateFetcherInterface;
+use AlanVdb\Http\Exception\RuntimeException;
 
 /**
  * Class SslCertificateFetcher
@@ -18,7 +18,7 @@ class SslCertificateFetcher implements SslCertificateFetcherInterface
      * @param string $domain The domain name for which to retrieve the SSL certificate.
      * @param string|null $savePath Optional. The path where the certificate should be saved.
      * @return string The SSL certificate in PEM format.
-     * @throws Exception If the certificate cannot be retrieved or saved.
+     * @throws RuntimeException If the certificate cannot be retrieved or saved.
      */
     public function fetch(string $domain, ?string $savePath = null): string
     {
@@ -33,7 +33,7 @@ class SslCertificateFetcher implements SslCertificateFetcherInterface
         $client = $this->streamSocketClient("ssl://{$domain}:443", $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $context);
 
         if (!$client) {
-            throw new SslCertificateFetchException("Unable to connect to {$domain}: {$errstr} ({$errno})");
+            throw new RuntimeException("Unable to connect to {$domain}: {$errstr} ({$errno})");
         }
 
         $params = stream_context_get_params($client);
@@ -46,7 +46,7 @@ class SslCertificateFetcher implements SslCertificateFetcherInterface
             return $certString;
         }
 
-        throw new SslCertificateFetchException("Failed to retrieve the certificate for {$domain}");
+        throw new RuntimeException("Failed to retrieve the certificate for {$domain}");
     }
 
     /**
@@ -54,24 +54,24 @@ class SslCertificateFetcher implements SslCertificateFetcherInterface
      *
      * @param string $certString The certificate in PEM format.
      * @param string $savePath The path where the certificate should be saved.
-     * @throws SslCertificateFetchException If the certificate cannot be saved.
+     * @throws RuntimeException If the certificate cannot be saved.
      */
     protected function saveCertificateToFile(string $certString, string $savePath): void
     {
         $directory = dirname($savePath);
         if (!is_dir($directory)) {
             if (!$this->createDirectory($directory) && !is_dir($directory)) {
-                throw new SslCertificateFetchException("Failed to create directory: {$directory}");
+                throw new RuntimeException("Failed to create directory: {$directory}");
             }
         }
 
         if (!$this->saveToFile($savePath, $certString)) {
-            throw new SslCertificateFetchException("Failed to save the certificate to {$savePath}");
+            throw new RuntimeException("Failed to save the certificate to {$savePath}");
         }
 
         clearstatcache();
         if (!file_exists($savePath)) {
-            throw new SslCertificateFetchException("The certificate file was not found after saving to {$savePath}");
+            throw new RuntimeException("The certificate file was not found after saving to {$savePath}");
         }
     }
 

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\SslCertificateFetcher\Factory;
+namespace AlanVdb\Http\Factory;
 
-use AlanVdb\SslCertificateFetcher\Definition\SslCertificateFetcherFactoryInterface;
-use AlanVdb\SslCertificateFetcher\Definition\SslCertificateFetcherInterface;
-use AlanVdb\SslCertificateFetcher\SslCertificateFetcher;
+use AlanVdb\Http\Definition\SslCertificateFetcherFactoryInterface;
+use AlanVdb\Http\Definition\SslCertificateFetcherInterface;
+use AlanVdb\Http\SslCertificateFetcher;
 
 class SslCertificateFetcherFactory implements SslCertificateFetcherFactoryInterface
 {

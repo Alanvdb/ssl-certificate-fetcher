@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AlanVdb\SslCertificateFetcher\Definition;
+namespace AlanVdb\Http\Definition;
 
 interface SslCertificateFetcherInterface
 {
